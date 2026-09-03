@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materials — Re-Create</title>
+<meta name="description" content="Pick a material and see what you can build with it — Re-Create's material idea tool.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2333513F'/%3E%3Ctext x='50' y='68' font-size='58' text-anchor='middle' fill='%23ECE7DB' font-family='sans-serif' font-weight='700'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#20241c;
+    --paper:#ece7db;
+    --paper-2:#f5f1e7;
+    --moss:#33513f;
+    --moss-dark:#223428;
+    --kraft:#b9874c;
+    --kraft-dark:#8c6636;
+    --rust:#9c4a2b;
+    --mist:#7d8f81;
+    --line: rgba(32,36,28,0.14);
+    --line-soft: rgba(32,36,28,0.08);
+
+    --c-cardboard:#b9874c;
+    --c-plastic:#3f8b90;
+    --c-paper:#9b9484;
+    --c-glass:#6fa6a0;
+    --c-fabric:#454f78;
+    --c-metal:#7c8083;
+
+    --font-display:'Space Grotesk', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+
+    /* semantic theme tokens (light, default) */
+    --bg: var(--paper);
+    --bg-panel: var(--paper-2);
+    --text: var(--ink);
+    --border: var(--line);
+    --accent: var(--moss);
+    --accent-strong: var(--rust);
+    --header-bg: rgba(236,231,219,0.88);
+    --footer-bg: var(--ink);
+    --footer-text: var(--paper-2);
+  }
+
+  html[data-theme="dark"]{
+    --bg:#06070a;
+    --bg-panel:#101218;
+    --text:#ece7db;
+    --border: rgba(236,231,219,0.14);
+    --accent:#86bfa0;
+    --accent-strong:#e2916a;
+    --header-bg: rgba(6,7,10,0.82);
+    --footer-bg:#020304;
+    --footer-text:#ece7db;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; }
+  }
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    transition:background-color 0.25s ease, color 0.25s ease;
+  }
+
+  html[data-theme="dark"] body{
+    background-color:#06070a;
+    background-image:
+      radial-gradient(1.5px 1.5px at 20px 30px, rgba(255,255,255,0.85), transparent),
+      radial-gradient(1.5px 1.5px at 90px 180px, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1.5px 1.5px at 160px 60px, rgba(255,255,255,0.9), transparent),
+      radial-gradient(1.5px 1.5px at 210px 210px, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1.5px 1.5px at 50px 120px, rgba(255,255,255,0.75), transparent),
+      radial-gradient(1.5px 1.5px at 230px 40px, rgba(255,255,255,0.8), transparent),
+      radial-gradient(2px 2px at 60px 80px, rgba(255,255,255,0.95), transparent),
+      radial-gradient(2px 2px at 260px 200px, rgba(255,255,255,0.85), transparent),
+      radial-gradient(2px 2px at 140px 300px, rgba(255,255,255,0.9), transparent),
+      radial-gradient(2px 2px at 300px 40px, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 30px 40px, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 90px 110px, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1px 1px at 120px 20px, rgba(255,255,255,0.45), transparent),
+      radial-gradient(1px 1px at 10px 100px, rgba(255,255,255,0.35), transparent),
+      radial-gradient(1px 1px at 70px 70px, rgba(255,255,255,0.4), transparent);
+    background-repeat:repeat;
+    background-size:
+      250px 250px, 250px 250px, 250px 250px, 250px 250px, 250px 250px, 250px 250px,
+      340px 340px, 340px 340px, 340px 340px, 340px 340px,
+      150px 150px, 150px 150px, 150px 150px, 150px 150px, 150px 150px;
+    background-attachment:fixed;
+  }
+
+  h1,h2,h3,h4{
+    font-family:var(--font-display);
+    font-weight:700;
+    line-height:1.08;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+
+  p{ margin:0; }
+  a{ color:inherit; }
+  img,svg{ display:block; }
+  button{ font:inherit; }
+
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    font-weight:600;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:0 0 0.9rem;
+  }
+
+  .wrap{
+    max-width:1160px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  /* ---------- header ---------- */
+  .site-header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:var(--header-bg);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+    transition:background-color 0.25s ease, border-color 0.25s ease;
+  }
+  .nav-wrap{
+    max-width:1160px;
+    margin:0 auto;
+    padding:18px 32px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+  }
+  .logo{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:1.25rem;
+    text-decoration:none;
+    color:var(--text);
+    letter-spacing:-0.01em;
+    background:none;
+    border:none;
+    cursor:pointer;
+    padding:0;
+  }
+  .logo span{ color:var(--accent-strong); }
+  .nav-links{
+    display:flex;
+    gap:32px;
+    list-style:none;
+    margin:0;
+    padding:0;
+  }
+  .nav-links a{
+    text-decoration:none;
+    font-size:0.92rem;
+    font-weight:500;
+    color:var(--text);
+    opacity:0.75;
+    transition:opacity 0.15s ease;
+  }
+  .nav-links a:hover{ opacity:1; }
+
+  .nav-actions{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+
+  .theme-toggle{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:40px;
+    height:40px;
+    flex-shrink:0;
+    border-radius:50%;
+    border:1px solid var(--border);
+    background:var(--bg-panel);
+    color:var(--text);
+    cursor:pointer;
+    padding:0;
+    transition:background-color 0.2s ease, border-color 0.2s ease;
+  }
+  .theme-toggle:hover{ border-color:var(--text); }
+  .theme-toggle:focus-visible{
+    outline:3px solid var(--accent-strong);
+    outline-offset:2px;
+  }
+  .theme-toggle svg{
+    width:18px;
+    height:18px;
+    stroke:currentColor;
+    stroke-width:1.6;
+    fill:none;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+  .theme-icon{ display:none; }
+  .icon-moon{ display:flex; }
+  html[data-theme="dark"] .icon-moon{ display:none; }
+  html[data-theme="dark"] .icon-sun{ display:flex; }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:var(--font-body);
+    font-weight:600;
+    font-size:0.92rem;
+    padding:12px 22px;
+    border-radius:100px;
+    text-decoration:none;
+    border:1px solid transparent;
+    cursor:pointer;
+    transition:transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+  }
+  .btn:focus-visible{
+    outline:3px solid var(--accent-strong);
+    outline-offset:2px;
+  }
+  .btn-primary{
+    background:var(--moss);
+    color:var(--paper-2);
+  }
+  .btn-primary:hover{ background:var(--moss-dark); transform:translateY(-1px); }
+  .btn-ghost{
+    background:transparent;
+    color:var(--text);
+    border-color:var(--border);
+  }
+  .btn-ghost:hover{ border-color:var(--text); }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    overflow:hidden;
+    padding:96px 0 80px;
+    border-bottom:1px solid var(--border);
+  }
+  .hero-inner{
+    position:relative;
+    z-index:1;
+    max-width:1160px;
+    margin:0 auto;
+    padding:0 32px;
+    display:grid;
+    grid-template-columns:1.05fr 0.85fr;
+    gap:64px;
+    align-items:center;
+  }
+  .hero h1{
+    font-size:clamp(2.4rem, 4.4vw, 3.6rem);
+    max-width:11.5ch;
+  }
+  .hero-sub{
+    margin-top:22px;
+    font-size:1.08rem;
+    color:var(--text);
+    opacity:0.78;
+    max-width:46ch;
+  }
+  .hero-actions{
+    margin-top:34px;
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+
+  .hero-visual{
+    position:relative;
+    height:340px;
+  }
+  .hero-3d-canvas{
+    position:absolute;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+  }
+  .hero-3d-canvas canvas{
+    display:block;
+    width:100%;
+    height:100%;
+  }
+  .hero-object{
+    position:absolute;
+    filter:drop-shadow(0 16px 26px rgba(32,36,28,0.28));
+  }
+  .obj-box{
+    width:190px;
+    top:130px;
+    left:0;
+    transform:rotate(-6deg);
+    z-index:1;
+    aspect-ratio:200/160;
+  }
+  .obj-bottle{
+    width:104px;
+    top:0;
+    left:180px;
+    transform:rotate(6deg);
+    z-index:3;
+    aspect-ratio:100/220;
+  }
+  .obj-can{
+    width:108px;
+    top:185px;
+    left:195px;
+    transform:rotate(-14deg);
+    z-index:2;
+    aspect-ratio:1/1;
+  }
+
+  /* ---------- material swatch textures ---------- */
+  .swatch-cardboard{
+    background-color:var(--c-cardboard);
+    background-image:repeating-linear-gradient(180deg, rgba(255,255,255,0.10) 0 3px, rgba(0,0,0,0.08) 3px 6px);
+  }
+  .swatch-plastic{
+    background:linear-gradient(135deg, #4a9ba0, var(--c-plastic) 55%, #2c6367);
+  }
+  .swatch-paper{
+    background-color:#dad3c0;
+    background-image:repeating-linear-gradient(0deg, rgba(0,0,0,0.035) 0 1px, transparent 1px 5px);
+  }
+  .swatch-paper .material-name{ color:var(--ink) !important; text-shadow:none !important; }
+  .swatch-glass{
+    background:linear-gradient(135deg, rgba(111,166,160,0.55), rgba(90,145,140,0.92) 60%);
+  }
+  .swatch-fabric{
+    background-color:var(--c-fabric);
+    background-image:
+      repeating-linear-gradient(45deg, rgba(255,255,255,0.07) 0 2px, transparent 2px 7px),
+      repeating-linear-gradient(-45deg, rgba(255,255,255,0.05) 0 2px, transparent 2px 7px);
+  }
+  .swatch-metal{
+    background:linear-gradient(100deg, #9aa0a3, #6e7376 38%, #bcc1c4 52%, #6e7376 68%, #9aa0a3);
+  }
+
+  /* ---------- how it works ---------- */
+  .how{
+    padding:88px 0;
+    max-width:1160px;
+    margin:0 auto;
+    padding-left:32px;
+    padding-right:32px;
+    border-bottom:1px solid var(--border);
+  }
+  .how h2{ font-size:clamp(1.8rem, 3vw, 2.4rem); max-width:16ch; }
+  .steps{
+    margin-top:48px;
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:40px;
+  }
+  .step{
+    border-top:2px solid var(--text);
+    padding-top:18px;
+  }
+  .step-num{
+    font-family:var(--font-mono);
+    font-size:0.85rem;
+    font-weight:600;
+    color:var(--accent-strong);
+    display:block;
+    margin-bottom:14px;
+  }
+  .step h3{
+    font-size:1.2rem;
+    margin-bottom:10px;
+  }
+  .step p{
+    font-size:0.96rem;
+    opacity:0.78;
+  }
+
+  /* ---------- materials preview (home page) ---------- */
+  .materials-preview{
+    padding:88px 0 100px;
+    max-width:1160px;
+    margin:0 auto;
+    padding-left:32px;
+    padding-right:32px;
+    border-bottom:1px solid var(--border);
+  }
+  .materials-preview h2{ font-size:clamp(1.8rem, 3vw, 2.4rem); }
+
+  /* ---------- materials (app) ---------- */
+  .app-topbar{
+    max-width:1160px;
+    margin:0 auto;
+    padding:24px 32px 0;
+  }
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:none;
+    border:none;
+    padding:0;
+    font-family:var(--font-body);
+    font-weight:600;
+    font-size:0.92rem;
+    color:var(--text);
+    opacity:0.75;
+    cursor:pointer;
+  }
+  .back-link:hover{ opacity:1; }
+  .back-link:focus-visible{
+    outline:3px solid var(--accent-strong);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  .materials{
+    padding:56px 0 100px;
+    max-width:1160px;
+    margin:0 auto;
+    padding-left:32px;
+    padding-right:32px;
+  }
+  .materials h2{ font-size:clamp(1.8rem, 3vw, 2.4rem); }
+  .section-sub{
+    margin-top:12px;
+    font-size:1rem;
+    opacity:0.72;
+    max-width:50ch;
+  }
+
+  .material-grid{
+    margin-top:40px;
+    display:grid;
+    grid-template-columns:repeat(6, 1fr);
+    gap:14px;
+  }
+  .material-btn{
+    position:relative;
+    aspect-ratio:1/1;
+    border-radius:16px;
+    border:2px solid transparent;
+    padding:16px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    cursor:pointer;
+    text-align:left;
+    color:#fff;
+    transition:transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    box-shadow:0 6px 16px rgba(32,36,28,0.10);
+  }
+  .material-btn:hover{ transform:translateY(-3px); box-shadow:0 14px 28px rgba(32,36,28,0.18); }
+  .material-btn:focus-visible{
+    outline:3px solid var(--accent-strong);
+    outline-offset:3px;
+  }
+  .material-btn[aria-pressed="true"]{
+    border-color:var(--text);
+    box-shadow:0 14px 30px rgba(32,36,28,0.24);
+  }
+  .material-icon svg{
+    width:26px;
+    height:26px;
+    stroke:#fff;
+    stroke-width:1.6;
+    fill:none;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+  .material-name{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:1rem;
+  }
+
+  .ideas-panel{
+    margin-top:44px;
+    background:var(--bg-panel);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:36px;
+    transition:background-color 0.25s ease, border-color 0.25s ease;
+  }
+  .ideas-head{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-bottom:8px;
+  }
+  .ideas-head .material-icon.large{
+    width:52px;
+    height:52px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+  }
+  .ideas-head .material-icon.large svg{
+    width:26px;
+    height:26px;
+    stroke:#fff;
+    stroke-width:1.6;
+    fill:none;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+  .ideas-head h3{
+    font-size:1.5rem;
+  }
+  .ideas-head .eyebrow{ margin:0 0 4px; }
+
+  .ideas-grid{
+    margin-top:26px;
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:18px;
+  }
+  .idea-card{
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    min-height:150px;
+  }
+  .idea-card h4{
+    font-size:1.02rem;
+    font-family:var(--font-body);
+    font-weight:700;
+  }
+  .idea-card p{
+    font-size:0.9rem;
+    opacity:0.78;
+    flex-grow:1;
+  }
+  .idea-tag{
+    font-family:var(--font-mono);
+    font-size:0.7rem;
+    font-weight:600;
+    letter-spacing:0.04em;
+    color:var(--accent);
+    text-transform:uppercase;
+  }
+  .see-more-wrap{
+    margin-top:22px;
+    text-align:center;
+  }
+
+  /* ---------- why it matters ---------- */
+  .why{
+    padding:88px 0 100px;
+    max-width:1160px;
+    margin:0 auto;
+    padding-left:32px;
+    padding-right:32px;
+    border-bottom:1px solid var(--border);
+  }
+  .why h2{ font-size:clamp(1.8rem, 3vw, 2.4rem); max-width:18ch; }
+  .why-grid{
+    margin-top:44px;
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:32px;
+  }
+  .why-card h3{
+    font-size:1.08rem;
+    margin-bottom:12px;
+  }
+  .why-card p{
+    font-size:0.94rem;
+    opacity:0.76;
+  }
+
+  /* ---------- faq ---------- */
+  .faq{
+    padding:88px 0 100px;
+    max-width:1160px;
+    margin:0 auto;
+    padding-left:32px;
+    padding-right:32px;
+    border-bottom:1px solid var(--border);
+  }
+  .faq h2{ font-size:clamp(1.8rem, 3vw, 2.4rem); max-width:16ch; }
+  .faq-list{
+    margin-top:40px;
+    display:grid;
+    gap:28px;
+  }
+  .faq-item{
+    border-top:1px solid var(--border);
+    padding-top:20px;
+  }
+  .faq-item h3{
+    font-size:1.05rem;
+    margin-bottom:8px;
+  }
+  .faq-item p{
+    font-size:0.95rem;
+    opacity:0.78;
+    max-width:70ch;
+  }
+
+  /* ---------- closing cta band ---------- */
+  .cta-band{
+    background:var(--moss);
+    color:var(--paper-2);
+  }
+  .cta-band-inner{
+    max-width:1160px;
+    margin:0 auto;
+    padding:64px 32px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+    flex-wrap:wrap;
+  }
+  .cta-band .eyebrow{ color:rgba(245,241,231,0.85); margin-bottom:0.5rem; }
+  .cta-band h2{ color:var(--paper-2); max-width:20ch; font-size:clamp(1.6rem,3vw,2.2rem); }
+  .cta-band .btn-primary{ background:var(--paper-2); color:var(--moss-dark); }
+  .cta-band .btn-primary:hover{ background:#ffffff; transform:translateY(-1px); }
+
+  /* ---------- footer ---------- */
+  .site-footer{
+    background:var(--footer-bg);
+    color:var(--footer-text);
+    padding:52px 0;
+    transition:background-color 0.25s ease;
+  }
+  .footer-inner{
+    max-width:1160px;
+    margin:0 auto;
+    padding:0 32px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+    flex-wrap:wrap;
+  }
+  .footer-inner .logo{ color:var(--footer-text); }
+  .footer-inner p{
+    font-size:0.88rem;
+    opacity:0.65;
+    max-width:44ch;
+  }
+
+  /* ---------- reveal on scroll ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(42px);
+    transition:opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1), transform 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.is-visible{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width:900px){
+    .hero-inner{ grid-template-columns:1fr; gap:56px; }
+    .hero-visual{ height:260px; }
+    .steps{ grid-template-columns:1fr; gap:32px; }
+    .material-grid{ grid-template-columns:repeat(3, 1fr); }
+    .ideas-grid{ grid-template-columns:repeat(2, 1fr); }
+    .why-grid{ grid-template-columns:1fr; gap:28px; }
+    .nav-links{ display:none; }
+  }
+  @media (max-width:560px){
+    .wrap, .hero-inner, .how, .materials, .materials-preview, .why, .faq, .app-topbar, .footer-inner{ padding-left:20px; padding-right:20px; }
+    .nav-wrap{ padding:16px 20px; }
+    .material-grid{ grid-template-columns:repeat(2, 1fr); }
+    .ideas-grid{ grid-template-columns:1fr; }
+    .ideas-panel{ padding:24px; }
+    .cta-band-inner{ flex-direction:column; align-items:flex-start; padding:48px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-wrap">
+    <a href="re-create.html" class="logo">Re<span>-</span>Create</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="re-create.html#how">How it works</a>
+      <a href="re-create.html#why">Why it matters</a>
+      <a href="re-create.html#faq">FAQ</a>
+    </nav>
+    <div class="nav-actions">
+      <button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch to dark theme" aria-pressed="false">
+        <span class="theme-icon icon-sun"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8l1.8-1.8M18 6l1.8-1.8"/></svg></span>
+        <span class="theme-icon icon-moon"><svg viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5Z"/></svg></span>
+      </button>
+      <a href="materials.html" class="btn btn-primary">Get Started</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="app-topbar">
+    <a href="re-create.html" class="back-link">&larr; Back to home</a>
+  </div>
+  <section class="materials reveal" id="materials">
+    <p class="eyebrow">Materials</p>
+    <h2>Pick what's in front of you</h2>
+    <p class="section-sub">Tap a material to see what it can become.</p>
+
+    <div class="material-grid" id="materialGrid" role="group" aria-label="Select a material"></div>
+    <div class="ideas-panel" id="ideasPanel"></div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="logo">Re<span>-</span>Create</span>
+    <p>A school Dragon's Den project — rethinking what everyday waste could become.</p>
+  </div>
+</footer>
+
+
+<script>
+(function(){
+var ICONS = {
+    cardboard: '<svg viewBox="0 0 24 24"><path d="M3 8l9-4 9 4-9 4-9-4Z"/><path d="M3 8v9l9 4 9-4V8"/><path d="M12 12v9"/></svg>',
+    plastic: '<svg viewBox="0 0 24 24"><path d="M9 2h6v3l1.5 2v13a1.5 1.5 0 0 1-1.5 1.5H9A1.5 1.5 0 0 1 7.5 20V7L9 5V2Z"/><path d="M9 9h6"/></svg>',
+    paper: '<svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6V2Z"/><path d="M15 2v5h5"/><path d="M9 13h8M9 17h8"/></svg>',
+    glass: '<svg viewBox="0 0 24 24"><path d="M8 3h8v2.5L17 7v13a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V7L8 5.5V3Z"/><path d="M7 10h10"/></svg>',
+    fabric: '<svg viewBox="0 0 24 24"><path d="M8 3 3 7l3 3 2-1.5V21h8V8.5L18 10l3-3-5-4-2 2h-4L8 3Z"/></svg>',
+    metal: '<svg viewBox="0 0 24 24"><path d="M6 5h12l-1 15a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1L6 5Z"/><path d="M6 5c0-1.1 2.7-2 6-2s6 .9 6 2-2.7 2-6 2-6-.9-6-2Z"/></svg>'
+  };
+
+  var MATERIALS = [
+    {
+      id:'cardboard', name:'Cardboard', swatch:'swatch-cardboard', icon:ICONS.cardboard,
+      ideas:[
+        {title:'Desk Organizer', tag:'30 min · Easy', blurb:'Stack and glue flat panels into trays for pens, mail, and loose cables.'},
+        {title:'Pinhole Camera', tag:'1 hr · Medium', blurb:'Turn a shoebox into a working camera with nothing but a pin and tape.'},
+        {title:'Cat Activity Maze', tag:'45 min · Easy', blurb:'Cut connecting doorways between boxes for an afternoon of chaos.'},
+        {title:'Laptop Stand', tag:'20 min · Easy', blurb:'Fold and slot cardboard into a stand that lifts your screen to eye level.'},
+        {title:'Storage Bin with Lid', tag:'20 min · Easy', blurb:'Fold flaps into a lid so a large box turns into stackable storage.'},
+        {title:'Marble Run', tag:'1.5 hr · Medium', blurb:'Cut ramps and tunnels into scrap panels for a marble maze.'},
+        {title:'Costume Armor', tag:'2 hr · Advanced', blurb:'Layer and shape panels into wearable armor pieces for dress-up.'},
+        {title:'Book Stand', tag:'15 min · Easy', blurb:'Fold a triangular brace that props a book open hands-free.'}
+      ]
+    },
+    {
+      id:'plastic', name:'Plastic', swatch:'swatch-plastic', icon:ICONS.plastic,
+      ideas:[
+        {title:'Self-Watering Planter', tag:'20 min · Easy', blurb:'Cut a bottle in half and flip the top down as a wick reservoir.'},
+        {title:'Vertical Herb Garden', tag:'1 hr · Medium', blurb:'Line up bottles on a wall bracket for a windowsill-sized garden.'},
+        {title:'Bird Feeder', tag:'30 min · Easy', blurb:'Cut two feeding ports and thread a perch through a bottle.'},
+        {title:'Desk Caddy', tag:'15 min · Easy', blurb:'Slice a container at an angle for an instant pen and brush holder.'},
+        {title:'Piggy Bank', tag:'15 min · Easy', blurb:'Cut a coin slot into a bottle and decorate it.'},
+        {title:'Funnel', tag:'5 min · Easy', blurb:'Slice a bottle at an angle for an instant funnel.'},
+        {title:'Watering Can', tag:'15 min · Easy', blurb:'Punch holes in a cap for a slow-pour spout.'},
+        {title:'Storage Bins', tag:'20 min · Easy', blurb:'Cut the tops off large containers for stackable bins.'}
+      ]
+    },
+    {
+      id:'paper', name:'Paper', swatch:'swatch-paper', icon:ICONS.paper,
+      ideas:[
+        {title:'Seed Paper Cards', tag:'1 hr · Medium', blurb:'Blend scrap paper with seeds and press into notes that grow.'},
+        {title:'Papier-Mache Bowl', tag:'2 hr · Medium', blurb:'Layer strips over a mould for a bowl that is dry by morning.'},
+        {title:'Woven Basket', tag:'1.5 hr · Advanced', blurb:'Fold sheets into strips and weave them into a small storage basket.'},
+        {title:'Gift Wrap', tag:'15 min · Easy', blurb:'Print, stamp, or paint plain paper into wrap worth keeping the bow for.'},
+        {title:'Bookmark Set', tag:'15 min · Easy', blurb:'Cut, fold, and decorate strips into keepsake bookmarks.'},
+        {title:'Paper Beads', tag:'45 min · Medium', blurb:'Roll strips around a skewer and seal for jewelry-making beads.'},
+        {title:'Notebook Covers', tag:'1 hr · Medium', blurb:'Wrap and stitch sheets around a stack of pages.'},
+        {title:'Origami Decor', tag:'30 min · Easy', blurb:'Fold shapes for garlands, boxes, or table decorations.'}
+      ]
+    },
+    {
+      id:'glass', name:'Glass', swatch:'swatch-glass', icon:ICONS.glass,
+      ideas:[
+        {title:'Pendant Light', tag:'1 hr · Medium', blurb:'Wire a socket through a jar lid for a hanging fixture.'},
+        {title:'Herb Storage', tag:'10 min · Easy', blurb:'Wash and label jars for a pantry shelf that actually matches.'},
+        {title:'Tabletop Terrarium', tag:'30 min · Easy', blurb:'Layer stones, soil, and a small plant inside a wide jar.'},
+        {title:'Candle Holder', tag:'20 min · Easy', blurb:'Etch or wrap a jar, then drop in a tealight.'},
+        {title:'Vase', tag:'15 min · Easy', blurb:'Wrap twine or paint a jar for a simple flower vase.'},
+        {title:'Bathroom Organizer', tag:'10 min · Easy', blurb:'Group jars on a tray for cotton balls and swabs.'},
+        {title:'Snow Globe', tag:'30 min · Medium', blurb:'Seal a figure, water, and glitter inside a small jar.'},
+        {title:'Soap Dispenser', tag:'20 min · Easy', blurb:'Fit a pump top to a jar lid for a refillable dispenser.'}
+      ]
+    },
+    {
+      id:'fabric', name:'Fabric', swatch:'swatch-fabric', icon:ICONS.fabric,
+      ideas:[
+        {title:'No-Sew Tote', tag:'15 min · Easy', blurb:'Cut and knot a t-shirt into a bag with handles built in.'},
+        {title:'Patchwork Cushion Cover', tag:'1.5 hr · Advanced', blurb:'Piece scraps into a cover that fits a cushion you already own.'},
+        {title:'Produce Bags', tag:'45 min · Medium', blurb:'Sew simple drawstring pouches for the next grocery run.'},
+        {title:'Braided Rug', tag:'2 hr · Advanced', blurb:'Cut strips and braid them into a small floor mat.'},
+        {title:'Scrunchies', tag:'20 min · Easy', blurb:'Sew a tube of fabric around elastic for hair ties.'},
+        {title:'Draft Stopper', tag:'30 min · Easy', blurb:'Sew a long tube and fill it with rice or beans.'},
+        {title:'Pet Bed Cover', tag:'1 hr · Medium', blurb:'Stitch scraps into a washable cover for a pet cushion.'},
+        {title:'Wall Hanging', tag:'1.5 hr · Advanced', blurb:'Knot strips onto a dowel for a woven wall piece.'}
+      ]
+    },
+    {
+      id:'metal', name:'Metal', swatch:'swatch-metal', icon:ICONS.metal,
+      ideas:[
+        {title:'Utensil Holder', tag:'10 min · Easy', blurb:'Peel off the label and smooth the rim for an instant caddy.'},
+        {title:'Wind Chime', tag:'30 min · Easy', blurb:'String a row of cans from a branch for a backyard chime.'},
+        {title:'Planter Row', tag:'30 min · Easy', blurb:'Punch drainage holes and line up cans for a herb shelf.'},
+        {title:'Lantern', tag:'45 min · Medium', blurb:'Punch a pattern into the can and drop in a candle for a glowing shade.'},
+        {title:'Herb Drying Rack', tag:'30 min · Medium', blurb:'Punch holes and thread wire through cans for a hanging rack.'},
+        {title:'Mini Grill Stand', tag:'45 min · Advanced', blurb:'Stack and vent cans into a small stand for a portable burner.'},
+        {title:'Desk Tidy', tag:'15 min · Easy', blurb:'Group several cans on a base for a multi-slot organizer.'},
+        {title:'Solar Lantern', tag:'30 min · Medium', blurb:'Fit a small solar light into a punched can for outdoor lighting.'}
+      ]
+    }
+  ];
+
+
+  window.reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Theme toggle
+  var toggle = document.getElementById('themeToggle');
+  function setTheme(theme){
+    document.documentElement.setAttribute('data-theme', theme);
+    if(toggle){
+      toggle.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+      toggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+    }
+  }
+  var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  setTheme(prefersDark ? 'dark' : 'light');
+  if(toggle){
+    toggle.addEventListener('click', function(){
+      var current = document.documentElement.getAttribute('data-theme');
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+  }
+
+  // Scroll reveal (bidirectional: slides in on the way down, back out on the way up)
+  function stagger(selector, step){
+    Array.prototype.forEach.call(document.querySelectorAll(selector), function(el, i){
+      el.dataset.revealDelay = (i * step) + 's';
+    });
+  }
+
+  window.setupReveal = function(staggerGroups){
+    (staggerGroups || []).forEach(function(g){ stagger(g.selector, g.step); });
+    var revealEls = document.querySelectorAll('.reveal');
+    if(window.reduceMotion || !('IntersectionObserver' in window)){
+      revealEls.forEach(function(el){ el.classList.add('is-visible'); });
+      return;
+    }
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        var el = entry.target;
+        window.clearTimeout(el._revealTimer);
+        if(entry.isIntersecting){
+          el.style.transitionDelay = el.dataset.revealDelay || '0s';
+          el.classList.add('is-visible');
+          el._revealTimer = window.setTimeout(function(){ el.style.transitionDelay = '0s'; }, 1300);
+        } else {
+          el.style.transitionDelay = '0s';
+          el.classList.remove('is-visible');
+        }
+      });
+    }, { threshold:0.15 });
+    revealEls.forEach(function(el){ observer.observe(el); });
+  };
+
+  var grid = document.getElementById('materialGrid');
+  var panel = document.getElementById('ideasPanel');
+
+  function cardHtml(idea){
+    return '<article class="idea-card">' +
+      '<h4>' + idea.title + '</h4>' +
+      '<p>' + idea.blurb + '</p>' +
+      '<span class="idea-tag">' + idea.tag + '</span>' +
+    '</article>';
+  }
+
+  function renderGrid(activeId){
+    grid.innerHTML = '';
+    MATERIALS.forEach(function(m){
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'material-btn ' + m.swatch;
+      btn.dataset.material = m.id;
+      btn.setAttribute('aria-pressed', m.id === activeId ? 'true' : 'false');
+      btn.innerHTML =
+        '<span class="material-icon">' + m.icon + '</span>' +
+        '<span class="material-name">' + m.name + '</span>';
+      btn.addEventListener('click', function(){ selectMaterial(m.id); });
+      grid.appendChild(btn);
+    });
+  }
+
+  function renderIdeas(id){
+    var m = MATERIALS.filter(function(x){ return x.id === id; })[0];
+    if(!m) return;
+
+    var primary = m.ideas.slice(0, 4);
+    var extra = m.ideas.slice(4);
+
+    var html =
+      '<div class="ideas-head">' +
+        '<span class="material-icon large ' + m.swatch + '">' + m.icon + '</span>' +
+        '<div>' +
+          '<p class="eyebrow">' + m.name.toUpperCase() + '</p>' +
+          '<h3>Things you can make</h3>' +
+        '</div>' +
+      '</div>' +
+      '<div class="ideas-grid">' + primary.map(cardHtml).join('') + '</div>';
+
+    if(extra.length){
+      html +=
+        '<div class="ideas-grid ideas-grid-extra" id="ideasGridExtra" hidden>' + extra.map(cardHtml).join('') + '</div>' +
+        '<div class="see-more-wrap">' +
+          '<button type="button" class="btn btn-ghost" id="seeMoreBtn" aria-expanded="false">See more ideas</button>' +
+        '</div>';
+    }
+
+    panel.innerHTML = html;
+
+    var seeMoreBtn = document.getElementById('seeMoreBtn');
+    if(seeMoreBtn){
+      seeMoreBtn.addEventListener('click', function(){
+        var extraGrid = document.getElementById('ideasGridExtra');
+        var willExpand = extraGrid.hidden;
+        extraGrid.hidden = !willExpand;
+        seeMoreBtn.textContent = willExpand ? 'See less' : 'See more ideas';
+        seeMoreBtn.setAttribute('aria-expanded', willExpand ? 'true' : 'false');
+      });
+    }
+  }
+
+  function selectMaterial(id){
+    Array.prototype.forEach.call(grid.querySelectorAll('.material-btn'), function(btn){
+      btn.setAttribute('aria-pressed', btn.dataset.material === id ? 'true' : 'false');
+    });
+    renderIdeas(id);
+  }
+
+  function getInitialMaterial(){
+    var params = new URLSearchParams(window.location.search);
+    var requested = params.get('material');
+    var match = MATERIALS.filter(function(m){ return m.id === requested; })[0];
+    return match ? match.id : MATERIALS[0].id;
+  }
+
+  var initialMaterial = getInitialMaterial();
+  renderGrid(initialMaterial);
+  renderIdeas(initialMaterial);
+
+  window.setupReveal([]);
+})();
+</script>
+
+</body>
+</html>
