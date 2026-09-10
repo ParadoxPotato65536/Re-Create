@@ -569,6 +569,72 @@
     color:var(--accent);
     text-transform:uppercase;
   }
+  .idea-card-link{
+    text-decoration:none;
+    cursor:pointer;
+    transition:transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+  .idea-card-link:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 22px rgba(32,36,28,0.14);
+    border-color:var(--accent);
+  }
+  .idea-card-link:focus-visible{
+    outline:3px solid var(--accent-strong);
+    outline-offset:3px;
+  }
+  .instructions-list{
+    margin-top:32px;
+    display:flex;
+    flex-direction:column;
+    gap:26px;
+    max-width:640px;
+  }
+  .instruction-step{
+    border-top:2px solid var(--text);
+    padding-top:16px;
+    display:flex;
+    gap:18px;
+    align-items:flex-start;
+  }
+  .instruction-num{
+    font-family:var(--font-mono);
+    font-size:0.85rem;
+    font-weight:600;
+    color:var(--accent-strong);
+    flex-shrink:0;
+    padding-top:2px;
+  }
+  .instruction-step p{
+    font-size:0.98rem;
+    opacity:0.85;
+  }
+  .supplies-list{
+    margin-top:16px;
+    padding-left:1.2em;
+    max-width:640px;
+  }
+  .supplies-list li{
+    font-size:0.96rem;
+    opacity:0.82;
+    margin-bottom:6px;
+  }
+  .video-placeholder{
+    margin-top:24px;
+    border:2px dashed var(--border);
+    border-radius:16px;
+    padding:72px 24px;
+    text-align:center;
+    max-width:640px;
+  }
+  .video-placeholder p{
+    font-family:var(--font-mono);
+    font-size:0.8rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--text);
+    opacity:0.55;
+  }
   .see-more-wrap{
     margin-top:22px;
     text-align:center;
@@ -904,8 +970,8 @@ var ICONS = {
     {
       id:'paper', name:'Paper', swatch:'swatch-paper', icon:ICONS.paper,
       ideas:[
-        {title:'Seed Paper Cards', tag:'1 hr · Medium', blurb:'Blend scrap paper with seeds and press into notes that grow.'},
-        {title:'Papier-Mache Bowl', tag:'2 hr · Medium', blurb:'Layer strips over a mould for a bowl that is dry by morning.'},
+        {title:'Seed Paper Cards', tag:'1 hr · Medium', blurb:'Blend scrap paper with seeds and press into notes that grow.', link:'seed-paper-cards.html'},
+        {title:'Papier-Mache Bowl', tag:'2 hr · Medium', blurb:'Layer strips over a mould for a bowl that is dry by morning.', link:'papier-mache-bowl.html'},
         {title:'Woven Basket', tag:'1.5 hr · Advanced', blurb:'Fold sheets into strips and weave them into a small storage basket.'},
         {title:'Gift Wrap', tag:'15 min · Easy', blurb:'Print, stamp, or paint plain paper into wrap worth keeping the bow for.'},
         {title:'Bookmark Set', tag:'15 min · Easy', blurb:'Cut, fold, and decorate strips into keepsake bookmarks.'},
