@@ -146,7 +146,7 @@
     display:flex;
     align-items:center;
     justify-content:space-between;
-    gap:24px;
+    gap:16px;
   }
   .logo{
     display:inline-flex;
@@ -162,6 +162,8 @@
     border:none;
     cursor:pointer;
     padding:0;
+    flex-shrink:0;
+    white-space:nowrap;
   }
   .logo span{ color:var(--accent-strong); }
   .logo-mark{
@@ -171,7 +173,7 @@
   }
   .nav-links{
     display:flex;
-    gap:32px;
+    gap:22px;
     list-style:none;
     margin:0;
     padding:0;
@@ -182,6 +184,7 @@
     font-weight:500;
     color:var(--text);
     opacity:0.75;
+    white-space:nowrap;
     transition:opacity 0.15s ease;
   }
   .nav-links a:hover{ opacity:1; }
@@ -189,7 +192,8 @@
   .nav-actions{
     display:flex;
     align-items:center;
-    gap:14px;
+    gap:10px;
+    flex-shrink:0;
   }
 
   .theme-toggle{
@@ -236,6 +240,7 @@
     padding:12px 22px;
     border-radius:100px;
     text-decoration:none;
+    white-space:nowrap;
     border:1px solid transparent;
     cursor:pointer;
     transition:transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
@@ -888,7 +893,8 @@
         <span class="theme-icon icon-sun"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8l1.8-1.8M18 6l1.8-1.8"/></svg></span>
         <span class="theme-icon icon-moon"><svg viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5Z"/></svg></span>
       </button>
-      <a href="materials.html" class="btn btn-primary">Get Started</a>
+      <a href="signup.html?tab=login" class="btn btn-ghost">Log In</a>
+      <a href="signup.html" class="btn btn-primary">Get Started</a>
     </div>
   </div>
 </header>
