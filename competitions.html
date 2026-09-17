@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Papier-Mache Bowl — Re-Create</title>
-<meta name="description" content="Layer strips over a mould for a bowl that is dry by morning.">
+<title>Competitions — Re-Create</title>
+<meta name="description" content="Seasonal build challenges for Re-Create premium members.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
@@ -903,59 +903,35 @@
 
 <main>
   <div class="app-topbar">
-    <a href="materials.html?material=paper" class="back-link">&larr; Back to materials</a>
+    <a href="index.html" class="back-link">&larr; Back to home</a>
   </div>
-  <section class="materials reveal" id="guide-intro">
-    <p class="eyebrow">Paper &middot; 2 hr &middot; Medium</p>
-    <h2>Papier-Mache Bowl</h2>
-    <p class="section-sub">Layer strips over a mould for a bowl that is dry by morning.</p>
+
+  <section class="materials reveal" id="lockedMessage">
+    <p class="eyebrow">Premium</p>
+    <h2>Competitions are a premium feature</h2>
+    <p class="section-sub">Log in with a premium account to see this season's build challenges.</p>
+    <div class="hero-actions" style="margin-top:24px;">
+      <a href="signup.html?tab=login" class="btn btn-primary">Log In</a>
+    </div>
   </section>
 
-  <section class="materials reveal" id="guide-body" style="padding-top:0;">
-    <p class="eyebrow">Watch it made</p>
-    <div class="video-placeholder">
-      <p>Video goes here</p>
-    </div>
+  <section class="materials reveal" id="competitionsContent" style="display:none;">
+    <p class="eyebrow">Premium &middot; Competitions</p>
+    <h2>Build challenges</h2>
+    <p class="section-sub">Enter seasonal challenges, get feedback on your builds, and see what other members are making.</p>
 
-    <p class="eyebrow" style="margin-top:40px;">What you'll need</p>
-    <ul class="supplies-list">
-      <li>Newspaper or scrap paper, torn into strips</li>
-      <li>Flour and water (or diluted PVA glue) for paste</li>
-      <li>A bowl to use as a mould</li>
-      <li>Plastic wrap or petroleum jelly</li>
-      <li>Scissors</li>
-      <li>Paint, for decorating once dry (optional)</li>
-    </ul>
-
-    <p class="eyebrow" style="margin-top:40px;">Instructions</p>
-    <div class="instructions-list">
-      <div class="instruction-step">
-        <span class="instruction-num">01</span>
-        <p>Cover the outside of a bowl with plastic wrap, or a thin layer of petroleum jelly, so the papier-mache does not stick.</p>
+    <div class="why-grid" style="margin-top:44px;">
+      <div class="why-card">
+        <h3>This Season's Challenge</h3>
+        <p>Build anything from a single material and submit a photo. The standout build gets featured on the homepage.</p>
       </div>
-      <div class="instruction-step">
-        <span class="instruction-num">02</span>
-        <p>Mix flour and water into a smooth, thin paste — or use diluted PVA glue instead.</p>
+      <div class="why-card">
+        <h3>Community Builds</h3>
+        <p>Browse what other members have submitted this month, and leave feedback on your favourites.</p>
       </div>
-      <div class="instruction-step">
-        <span class="instruction-num">03</span>
-        <p>Dip paper strips into the paste and layer them over the outside of the bowl, smoothing out any air bubbles.</p>
-      </div>
-      <div class="instruction-step">
-        <span class="instruction-num">04</span>
-        <p>Build up three to four layers, letting each layer dry slightly before adding the next.</p>
-      </div>
-      <div class="instruction-step">
-        <span class="instruction-num">05</span>
-        <p>Leave the whole thing to dry overnight in a warm, dry spot.</p>
-      </div>
-      <div class="instruction-step">
-        <span class="instruction-num">06</span>
-        <p>Once fully dry and hard, gently ease the papier-mache shell off the mould.</p>
-      </div>
-      <div class="instruction-step">
-        <span class="instruction-num">07</span>
-        <p>Trim the rim with scissors, then paint or decorate if you like.</p>
+      <div class="why-card">
+        <h3>Past Winners</h3>
+        <p>See standout builds from previous challenges for inspiration on your next project.</p>
       </div>
     </div>
   </section>
@@ -967,6 +943,7 @@
     <p>A school Dragon's Den project — rethinking what everyday waste could become.</p>
   </div>
 </footer>
+
 
 <div class="ai-widget" id="aiWidget" style="display:none;">
   <div class="ai-widget-header">
@@ -983,7 +960,6 @@
     </button>
   </form>
 </div>
-
 
 
 <script>
@@ -1069,12 +1045,14 @@
   // Premium account check (fake demo — no real accounts, just localStorage)
   try{
     if(window.localStorage.getItem('rc_premium') === 'true'){
+      document.getElementById('lockedMessage').style.display = 'none';
+      document.getElementById('competitionsContent').style.display = 'block';
       var navCompetitions = document.getElementById('navCompetitions');
       if(navCompetitions){ navCompetitions.style.display = ''; }
       var aiWidgetEl = document.getElementById('aiWidget');
       if(aiWidgetEl){ aiWidgetEl.style.display = 'flex'; }
     }
-  } catch(err){ /* localStorage unavailable — premium features just stay hidden */ }
+  } catch(err){ /* localStorage unavailable — page just stays locked */ }
 })();
 </script>
 
